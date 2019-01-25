@@ -27,23 +27,34 @@ entry_min_price = []
 entry_average_price = []
 
 for town in towns:
-    condition = data_df['town'] == town
-    numbers = len(data_df[condition]['price'])
-    max_id = data_df[condition]['price'].idxmax()
-    min_id = data_df[condition]['price'].idxmin()
-    max_value = int(data_df.loc[max_id, 'price'])
-    min_value = int(data_df.loc[min_id, 'price'])
-    price_sum = int(data_df[condition]['price'].sum(axis=0))
-    average_price = int(price_sum / numbers)
+    # select town data
+    rows = data_df[data_df['town'] == town]
+    # compute their price per square meter
+    rows_df = rows['price'] / rows['floor_area']
+    # records of trade
+    numbers = len(rows)
+    # max pms
+    max_value =  int(round(rows_df.max() + 0.5))
+    # min pms
+    min_value = int(round(rows_df.min() + 0.5))
+    # sum of pms
+    price_sum =rows_df.sum(axis=0) 
+    # average pms
+    average_price =  int(round(price_sum / numbers + 0.5))
+    # put data into arrays
     entries.append(numbers)
     entry_max_price.append(max_value)
     entry_min_price.append(min_value)
     entry_average_price.append(average_price)
+    # print(town," ", numbers, " ", max_value, " ", min_value, " ", average_price)
 
-data = {'town':towns, 'entries':entries, 'max_price':entry_max_price, 'min_price':entry_min_price, 'average_price': entry_average_price}
-columns = ['town', 'entries', 'max_price', 'min_price', 'average_price']
+data = {'town':towns, 'entries':entries, 'max_price':entry_max_price, 'average_price': entry_average_price, 'min_price':entry_min_price}
+columns = ['town', 'entries', 'max_price', 'average_price', 'min_price']
 new_data = pd.DataFrame(data,columns=columns)
 new_data.sort_values(by='average_price',ascending=False, inplace=True)
 new_data.to_csv("q2.csv", index=False, header=0)
 
+# ---------------------------------------------------------------------
+# Question 3
+# ---------------------------------------------------------------------
     
