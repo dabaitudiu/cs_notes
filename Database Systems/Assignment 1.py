@@ -102,3 +102,7 @@ pd.DataFrame(fourth_result).to_csv("q4.csv", index=False, header=0)
 # ---------------------------------------------------------------------
 # Question 5
 # ---------------------------------------------------------------------
+dix = data_df[data_df['town'] == 'YISHUN'].index
+data_df.loc[:,'floor_area'] = data_df.loc[:,'floor_area'].astype(int)
+data_df.loc[dix,'floor_area'] = (data_df.loc[dix,'floor_area'] * 1.1 + 0.5).round().astype(int)
+data_df.to_csv("q5.csv", index=False, header=0)
