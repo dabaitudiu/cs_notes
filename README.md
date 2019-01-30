@@ -12,4 +12,8 @@
 - 第三题，很简单，就是考定义，o(n)是对所有常数c， O(n)是存在常数c.
 - 答案参考已上传至repo.
 
+### Computer Architecutre
+- 最近准备面试。。只好复习一下，真心看不进去。。
+
+
 ### CS231N (Convolutional Neural Networks)
