@@ -13,11 +13,11 @@ while True:
 ### 7-1-2. Optimization: Problems with SGD (stochastic gradient descent)
 
 问题A: 速率过快或过缓
-![Fig1](http://github.com/master.jpg)
-![Fig2](http://github.com/master.jpg)
+![Fig1](https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig1.png)
+![Fig2](https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig2.png)
 Suppose our target function is like above, one is 2D view, the other is 3D view. When we are changeing in horizontal directions, our loss changes slowly; but if we move up & down, our loss changes sensitively in the vertical direction.
-![Fig3](http://github.com/master.jpg)
-![Fig4](http://github.com/master.jpg)
+![Fig3](https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig3.png)
+![Fig4](https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig4.png)
 1. 在Fig 1&2 上的点P:
 - 对于loss value, 在这一点上是很坏的情况
 - 它是Hessian matrix 中最大奇异值与最小奇异值之比
