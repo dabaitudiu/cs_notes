@@ -11,13 +11,15 @@ while True:
 2. Loss function tells us how good or bad is that value of the weights doing on our problem.
 
 ### 7-1-2. Optimization: Problems with SGD (stochastic gradient descent)
-
 问题A: 速率过快或过缓
-![Fig1](https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig1.png)
-![Fig2](https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig2.png)
+<br/>
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig1.png" width = "128" height = "128" alt="fig1" align=left padding= "100" />
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig2.png" width = "128" height = "128" alt="fig2" align=left />
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig3.png" width = "128" height = "128" alt="fig3" align=left />
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig4.png" width = "128" height = "128" alt="fig4"  />
+<br/>
+
 Suppose our target function is like above, one is 2D view, the other is 3D view. When we are changeing in horizontal directions, our loss changes slowly; but if we move up & down, our loss changes sensitively in the vertical direction.
-![Fig3](https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig3.png)
-![Fig4](https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig4.png)
 1. 在Fig 1&2 上的点P:
 - 对于loss value, 在这一点上是很坏的情况
 - 它是Hessian matrix 中最大奇异值与最小奇异值之比
@@ -27,8 +29,10 @@ Suppose our target function is like above, one is 2D view, the other is 3D view.
 3. 在高维空间中，这个问题更加普遍。
 
 问题B: Local minima & Saddle points
-![Fig5](http://github.com/master.jpg)
-![Fig6](http://github.com/master.jpg)
+<br/>
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig3.png" width = "128" height = "128" alt="fig3" align=left />
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig3.png" width = "128" height = "128" alt="fig3"  />
+<br/>
 - 在local minima上，target function 会卡住困在局部最小值而不是全局最小值
 - 在saddle points上，由于gradient == 0, 不会再继续optimize.
 
