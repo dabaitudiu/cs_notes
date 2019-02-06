@@ -100,9 +100,9 @@ Nestrov Momentum:<br/>
 <img src="https://latex.codecogs.com/gif.latex?v_{t+1}%20=%20&#x5C;rho%20v_t%20-%20&#x5C;alpha%20&#x5C;nabla%20f(x_t%20+%20&#x5C;rho%20v_t)"/>
 <br/>
 <img src="https://latex.codecogs.com/gif.latex?x_{t+1}%20=%20x_t%20+%20v_{t+1}"/>
-<br/>
-Problem: <img src="https://latex.codecogs.com/gif.latex?&#x5C;nabla%20f(x_t%20+%20&#x5C;rho%20v_t)"/> is quite annoying. Usually we want to update <img src="https://latex.codecogs.com/gif.latex?x_t,%20&#x5C;nabla%20f(x_t)"/> at the same time.
-<br/>
+<br/><br/>
+Problem: <br/><img src="https://latex.codecogs.com/gif.latex?&#x5C;nabla%20f(x_t%20+%20&#x5C;rho%20v_t)"/> is quite annoying. Usually we want to update <img src="https://latex.codecogs.com/gif.latex?x_t,%20&#x5C;nabla%20f(x_t)"/> at the same time.
+<br/><br/>
 Solution: Change variable <br/><img src="https://latex.codecogs.com/gif.latex?&#x5C;widetilde{x_t}%20=%20x_t%20+%20&#x5C;rho%20v_t"/><br/>
 <img src="https://latex.codecogs.com/gif.latex?v_{t+1}%20=%20&#x5C;rho%20v_t%20-%20&#x5C;alpha%20&#x5C;nabla%20f(&#x5C;widetilde{x_t})"/>
 <br/>
@@ -196,14 +196,14 @@ for t in range(num_iterations):
   
 SGD,SGD+Momentum,AdaGrad,RMSProp, Adam all have learning rate as a hyper parameter. <br/>
 Q: Which one of these learning rate is best to use?<br/>
-<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig11.png" width = "128" height = "128" alt="fig5" align=center />
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig11.png" width = "256" height = "256" alt="fig5" align=center />
 <br/>
 => Learning rate decay over time!
 - step decay: decay learning rate by half every few epochs.
 - exponential decay: <img src="https://latex.codecogs.com/gif.latex?&#x5C;alpha%20=%20&#x5C;alpha_0%20e^{-kt}"/>
 - 1/t decay: <img src="https://latex.codecogs.com/gif.latex?&#x5C;alpha%20=%20&#x5C;alpha_0%20&#x2F;%20(1%20+%20kt)"/>
 <br/>
-<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig12.png" width = "128" height = "128" alt="fig5" align=center />
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig12.png" width = "256" height = "256" alt="fig5" align=center />
 Idea:
 - 假设模型已经接近一个比较不错的取值区域，但是此时的梯度已经很小了，保持原有的学习速率只能在最优点附近来回徘徊。如果我们降低了学习率，目标函数仍然能够进一步降低，即在损失函数上进一步取得进步。
   
@@ -213,19 +213,20 @@ Idea:
 - use gradient form linear approximation
 - step to minimize the approximation.
 <br/>
-<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig13.png" width = "128" height = "128" alt="fig5" align=center />
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig13.png" width = "256" height = "256" alt="fig5" align=center />
 <br/>
 2. Second-Order Optimization
 - use gradient and Hessian to form quadratic approximation
 - step to the minima of the approximation
-- 同时考虑一阶和二阶偏导信息，现在我们对函数做一个二姐泰勒逼近。因为是二次函数，可以直接跳到最小值点。
+- 同时考虑一阶和二阶偏导信息，现在我们对函数做一个二阶泰勒逼近。因为是二次函数，可以直接跳到最小值点。
 <br/>
-<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig14.png" width = "128" height = "128" alt="fig5" align=center />
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig14.png" width = "256" height = "256" alt="fig5" align=center />
 <br/>
 当把上述思想推广到多维的情况时，就会得到一个叫做牛顿步长的东西。计算这个Hessian Matrix, 即二阶偏导矩阵，接着求Hessian Matrix的逆矩阵，以便直接走到对你的函数用二次逼近后的最小值的地方。
 Second-Order Taylor expansion:<br/>
-<img src="https://latex.codecogs.com/gif.latex?J(&#x5C;theta)%20&#x5C;approx%20J(&#x5C;theta_0)%20+%20(&#x5C;theta%20-%20&#x5C;theta_0)^T%20&#x5C;nabla%20J(&#x5C;theta_0)%20+%201&#x2F;2%20(&#x5C;theta%20-%20&#x5C;theta_0)^T%20H(&#x5C;theta%20-%20&#x5C;theta_0)"/><br/>
-Solving for the critical point, we obtain theNewton parameter update:<br/>
+<img src="https://latex.codecogs.com/gif.latex?J(&#x5C;theta)%20&#x5C;approx%20J(&#x5C;theta_0)%20+%20(&#x5C;theta%20-%20&#x5C;theta_0)^T%20&#x5C;nabla%20J(&#x5C;theta_0)%20+%201&#x2F;2%20(&#x5C;theta%20-%20&#x5C;theta_0)^T%20H(&#x5C;theta%20-%20&#x5C;theta_0)"/>
+<br/>
+Solving for the critical point, we obtain the Newton parameter update:<br/>
 <img src="https://latex.codecogs.com/gif.latex?&#x5C;theta^*%20=%20&#x5C;theta_0%20-%20H^{-1}&#x5C;nabla%20J(&#x5C;theta_0)"/>
 <br/>
 
