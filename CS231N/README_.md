@@ -46,16 +46,18 @@ Suppose our target function is like above, one is 2D view, the other is 3D view.
   
 ### 7-1-3: Fancier Optimizer 1: SGD + Momentum
   
-**SGD:**
-x<sub>t+1</sub> = x<sub>t</sub> - a*f<sup>'</sup>(x<sub>t</sub>)
+**SGD:**<br/>
+x<sub>t+1</sub> = x<sub>t</sub> - a•f<sup>'</sup>(x<sub>t</sub>)<br/>
 ```python
 while True:
     dx = compute_gradient(x)
     x += learning_rate * dx
 ```
 **SGD + Momentum:**
-v<sub>t+1</sub> = p * v<sub>t</sub> - f<sup>'</sup>(x<sub>t</sub>)
-x<sub>t+1</sub> = x<sub>t</sub> - a*v<sub>t+1</sub>
+<br/>
+v<sub>t+1</sub> = p•v<sub>t</sub> - f<sup>'</sup>(x<sub>t</sub>)
+<br/>
+x<sub>t+1</sub> = x<sub>t</sub> - a•v<sub>t+1</sub>
 ```python
 vx = 0
 while True:
@@ -67,11 +69,12 @@ while True:
 Idea:
 - Build up "velocity" as a running mean of gradients
 - Rho gives "friction"; typically tho = 0.9 or 0.99
-  
+<br/>
 理解:
 <img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig7.png" width = "128" height = "128" alt="fig5" align=left />
 <img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig8.png" width = "128" height = "128" alt="fig5"  />
 <br/>
+
 - 保持一个不随时间变化的速度，并且我们将梯度估计值添加到这个速度上，然后再这个速度的方向上前进，而不是在梯度的方向上前进。(这样可以越过gradient=0)
 - Intuitively, velocity is a weighted mean of gradients
 - 随着梯度的权重越来越大，在每一步，我们都采用旧速度，通过摩擦系数衰减，然后加上当前的梯度，可以把它看成是一个最近梯度平均值的平滑移动，并且在梯度上有一个能够几时回来的指数衰减权重。
@@ -83,22 +86,31 @@ Idea:
 <br/>
   
 Normal: <img src="https://latex.codecogs.com/gif.latex?&#x5C;overrightarrow{velocity}%20+%20&#x5C;overrightarrow{gradient}%20&#x5C;rightarrow%20&#x5C;overrightarrow{actual-step}"/>
+<br/>
 Nestrov: <img src="https://latex.codecogs.com/gif.latex?&#x5C;overrightarrow{velocity}%20+%20&#x5C;overrightarrow{gradient-start-at-%20velocity}%20&#x5C;rightarrow%20&#x5C;overrightarrow{actual%20step}"/>
   
 If your velocity direction was actaully a little bit wrong, it lets you incorporate gradient information from a little bit longer parts of the objective landscape.
   
-SGD + Momemtum:
+SGD + Momemtum:<br/>
 <img src="https://latex.codecogs.com/gif.latex?v_{t+1}%20=%20&#x5C;rho%20v_t%20+%20&#x5C;nabla%20f(x_t)"/>
+<br/>
 <img src="https://latex.codecogs.com/gif.latex?x_{t+1}%20=%20x_t%20-%20&#x5C;alpha%20v_{t+1}"/>
   
-Nestrov Momentum:
+Nestrov Momentum:<br/>
 <img src="https://latex.codecogs.com/gif.latex?v_{t+1}%20=%20&#x5C;rho%20v_t%20-%20&#x5C;alpha%20&#x5C;nabla%20f(x_t%20+%20&#x5C;rho%20v_t)"/>
-<img src="https://latex.codecogs.com/gif.latex?x_{t+1}%20=%20x_t%20+%20v_{t+1}"/>
 <br/>
-Problem: <img src="https://latex.codecogs.com/gif.latex?&#x5C;nabla%20f(x_t%20+%20&#x5C;rho%20v_t)"/> is quite annoying. Usually we want to update <img src="https://latex.codecogs.com/gif.latex?x_t,%20&#x5C;nabla%20f(x_t)"/> at the same time.
-Solution: Change variable <img src="https://latex.codecogs.com/gif.latex?&#x5C;widetilde{x_t}%20=%20x_t%20+%20&#x5C;rho%20v_t"/>
+<img src="https://latex.codecogs.com/gif.latex?x_{t+1}%20=%20x_t%20+%20v_{t+1}"/>
+<br/><br/>
+Problem: <br/><img src="https://latex.codecogs.com/gif.latex?&#x5C;nabla%20f(x_t%20+%20&#x5C;rho%20v_t)"/> is quite annoying. Usually we want to update <img src="https://latex.codecogs.com/gif.latex?x_t,%20&#x5C;nabla%20f(x_t)"/> at the same time.
+<br/><br/>
+Solution: Change variable <br/><img src="https://latex.codecogs.com/gif.latex?&#x5C;widetilde{x_t}%20=%20x_t%20+%20&#x5C;rho%20v_t"/><br/>
 <img src="https://latex.codecogs.com/gif.latex?v_{t+1}%20=%20&#x5C;rho%20v_t%20-%20&#x5C;alpha%20&#x5C;nabla%20f(&#x5C;widetilde{x_t})"/>
-<img src="https://latex.codecogs.com/gif.latex?&#x5C;begin{aligned}&#x5C;widetilde{x_{t+1}}%20&amp;=%20&#x5C;widetilde{x_t}%20-%20&#x5C;rho%20v_t%20+%20(1+&#x5C;rho)v_t%20+%201%20&#x5C;&#x5C;%20%20&amp;=%20&#x5C;widetilde{x_t}%20+%20v_{t+1}%20+%20&#x5C;rho(v_{t+1}%20-%20v_t)&#x5C;end{aligned}"/>
+<br/>
+<img src="https://latex.codecogs.com/gif.latex?&#x5C;begin{aligned}
+&#x5C;widetilde{x_{t+1}}%20&amp;=%20&#x5C;widetilde{x_t}%20-%20&#x5C;rho%20v_t%20+%20(1+&#x5C;rho)v_t%20+%201%20&#x5C;&#x5C;
+%20%20&amp;=%20&#x5C;widetilde{x_t}%20+%20v_{t+1}%20+%20&#x5C;rho(v_{t+1}%20-%20v_t)
+&#x5C;end{aligned}"/>
+<br/>
 Code:
 ```python
 dx = compute_gradient(x)
@@ -182,15 +194,16 @@ for t in range(num_iterations):
   
 ### 7-1-8: Learning Rate Analysis
   
-SGD,SGD+Momentum,AdaGrad,RMSProp, Adam all have learning rate as a hyper parameter.
-Q: Which one of these learning rate is best to use?
-<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig11.png" width = "128" height = "128" alt="fig5" align=center />
+SGD,SGD+Momentum,AdaGrad,RMSProp, Adam all have learning rate as a hyper parameter. <br/>
+Q: Which one of these learning rate is best to use?<br/>
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig11.png" width = "256" height = "256" alt="fig5" align=center />
 <br/>
 => Learning rate decay over time!
 - step decay: decay learning rate by half every few epochs.
 - exponential decay: <img src="https://latex.codecogs.com/gif.latex?&#x5C;alpha%20=%20&#x5C;alpha_0%20e^{-kt}"/>
 - 1/t decay: <img src="https://latex.codecogs.com/gif.latex?&#x5C;alpha%20=%20&#x5C;alpha_0%20&#x2F;%20(1%20+%20kt)"/>
-<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig12.png" width = "128" height = "128" alt="fig5" align=center />
+<br/>
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig12.png" width = "256" height = "256" alt="fig5" align=center />
 Idea:
 - 假设模型已经接近一个比较不错的取值区域，但是此时的梯度已经很小了，保持原有的学习速率只能在最优点附近来回徘徊。如果我们降低了学习率，目标函数仍然能够进一步降低，即在损失函数上进一步取得进步。
   
@@ -199,30 +212,33 @@ Idea:
 1. First-Order Optimization
 - use gradient form linear approximation
 - step to minimize the approximation.
-  
-<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig13.png" width = "128" height = "128" alt="fig5" align=center />
-  
+<br/>
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig13.png" width = "256" height = "256" alt="fig5" align=center />
+<br/>
 2. Second-Order Optimization
 - use gradient and Hessian to form quadratic approximation
 - step to the minima of the approximation
-- 同时考虑一阶和二阶偏导信息，现在我们对函数做一个二姐泰勒逼近。因为是二次函数，可以直接跳到最小值点。
-  
-<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig14.png" width = "128" height = "128" alt="fig5" align=center />
-  
+- 同时考虑一阶和二阶偏导信息，现在我们对函数做一个二阶泰勒逼近。因为是二次函数，可以直接跳到最小值点。
+<br/>
+<img src="https://github.com/dabaitudiu/cs_notes/blob/master/CS231N/fig14.png" width = "256" height = "256" alt="fig5" align=center />
+<br/>
 当把上述思想推广到多维的情况时，就会得到一个叫做牛顿步长的东西。计算这个Hessian Matrix, 即二阶偏导矩阵，接着求Hessian Matrix的逆矩阵，以便直接走到对你的函数用二次逼近后的最小值的地方。
-Second-Order Taylor expansion:
+Second-Order Taylor expansion:<br/>
 <img src="https://latex.codecogs.com/gif.latex?J(&#x5C;theta)%20&#x5C;approx%20J(&#x5C;theta_0)%20+%20(&#x5C;theta%20-%20&#x5C;theta_0)^T%20&#x5C;nabla%20J(&#x5C;theta_0)%20+%201&#x2F;2%20(&#x5C;theta%20-%20&#x5C;theta_0)^T%20H(&#x5C;theta%20-%20&#x5C;theta_0)"/>
-Solving for the critical point, we obtain theNewton parameter update:
+<br/>
+Solving for the critical point, we obtain the Newton parameter update:<br/>
 <img src="https://latex.codecogs.com/gif.latex?&#x5C;theta^*%20=%20&#x5C;theta_0%20-%20H^{-1}&#x5C;nabla%20J(&#x5C;theta_0)"/>
-  
+<br/>
+
 Q1: What is nice about this update?
 - Ans: There isn't a learning rate.
+- Sometimes we still use the learning rate for better estimations.
   
 Q2: What's the problem with these formulas?
 - Ans: Hessian has <img src="https://latex.codecogs.com/gif.latex?O(N^2)"/> elements. Inverting it takes <img src="https://latex.codecogs.com/gif.latex?O(N^3)"/>. N = (Tens or Hundreds of ) Millions
 - 内存不够，没法求矩阵的逆.
   
-Solution: 拟牛顿法代替牛顿法
+**Solution: 拟牛顿法代替牛顿法**
 - Quasi-Newton methos(BGFs most popular): instead of inverting the Hessian <img src="https://latex.codecogs.com/gif.latex?O(n^3)"/>, approximate inverse Hessian with rank 1 updates over time (<img src="https://latex.codecogs.com/gif.latex?O(N^2)"/> each)
 - L-BFGS(Limited Memory BFGS): Does not form / store the full inverse Hessian.
   
