@@ -14,6 +14,7 @@
 ### CS231N (Convolutional Neural Networks)
 #### 7.1 [Fancier Optimizers](https://github.com/dabaitudiu/cs_notes/tree/master/CS231N) 
 
-
+### NodeJS
+#### [Introduction to NodeJS](https://github.com/dabaitudiu/cs_notes/tree/master/NodeJS) 
 
 
