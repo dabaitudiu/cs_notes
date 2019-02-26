@@ -239,7 +239,7 @@ exports.upload = upload;
 所以要想办法避免因为异步而return了一个没有按预期赋值的variable.
 
 ## 7. 解决因异步加载而无法return expected value
-为避免return,还想从requestHandler中获得结果传给response,可以反过来将response传入.
+为避免return,还想从requestHandler中获得结果传给response,可以反过来将response传入.<br/>
 **server.js**:
 ```javascript
 var http = require("http");
@@ -475,7 +475,7 @@ exports.start = start;
 exports.upload = upload;
 ```
 ## 9. 上传图片/文件
-在了解了处理POST请求的过程后，我们来实现最终目标：上传图片。与POST相似，图片文件也是在server.js被获取，之后传给route & requestHandler. 不过POST只是文本，土坯那需要额外的模块来解析，而不是直接把解析对象传给route & requestHandler. 所以这次把request也一并传递
+在了解了处理POST请求的过程后，我们来实现最终目标：上传图片。与POST相似，图片文件也是在server.js被获取，之后传给route & requestHandler. 不过POST只是文本，土坯那需要额外的模块来解析，而不是直接把解析对象传给route & requestHandler. 所以这次把request也一并传递<br/>
 **server.js**:
 ```javascript
 var http = require("http");
