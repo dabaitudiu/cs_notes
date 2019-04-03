@@ -144,3 +144,4 @@ select rname,
 from Sells S
 where pizza = 'Funghi';
 ```
+1B94A32C-F837-4ADD-7907-067D24B0CB3C
